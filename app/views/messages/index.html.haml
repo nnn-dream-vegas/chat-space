@@ -1,0 +1,19 @@
+.wrapper
+
+  = render 'shared/side_bar'
+
+  .chat
+    .header
+      .right-header
+        .right-header__button
+          = link_to "Edit", edit_group_path(current_user)
+    .messages
+      = render partial: 'message', collection: @messages
+    .form
+      = form_for [@group, @message] do |f|
+        = f.text_field :content, class: 'form__message', id: 'new_message', placeholder: 'type a message'
+        .form__mask
+          = f.label :image, class: 'form__mask__image' do
+            = fa_icon 'picture-o', class: 'icon'
+            = f.file_field :image, class: 'hidden'
+        = f.submit 'Send', class: 'form__submit'
