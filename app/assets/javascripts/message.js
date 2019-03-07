@@ -2,34 +2,33 @@
 $(function(){
 
   function buildHTML(message){
-    var imagehtml = message.image == null ? "" : `<img src="${message.image}" class="lower-message__image">`
     var html = `<div class=message>
                     <div class="upper-message">
                       <div class="upper-message__user-name">
                       ${message.user_name}
                       </div>
                       <div class="upper-message__date">
-                      ${message.created_at}
+                      ${message.created_at}("%Y/%m/%d %H:%M")
                       </div>
                     </div>
                     <div class="lower-message">
                       <p class="lower-message__content">
                       ${message.content}
                       </p>
-                      ${imagehtml}
+                      ${message.image.url}
                     </div>
                   </div> `
     return html;
   }
 
-  $('#new_message').on('submit', function(e){
 
+
+  $('#new_message').on('submit', function(e){
     e.preventDefault();
     var formData = new FormData(this);
-    var href = window.location.href
-
+    var url = $(this).attr('action')
     $.ajax({
-      url: href,
+      url: url,
       type: "POST",
       data: formData,
       dataType: 'json',
@@ -39,11 +38,8 @@ $(function(){
     .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
-     $( ".form__submit").prop( "disabled", false );
+      $( ".form__message").val('')
 
-     $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
-     $('.form__message').val('');
-     $('.hidden').val('');
     })
    .fail(function(){
       alert('error');
