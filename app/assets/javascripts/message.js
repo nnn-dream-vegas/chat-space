@@ -1,7 +1,8 @@
 
 $(function(){
+    function buildHTML(message){
 
-  function buildHTML(message){
+
     var html = `<div class=message>
                     <div class="upper-message">
                       <div class="upper-message__user-name">
@@ -12,10 +13,11 @@ $(function(){
                       </div>
                     </div>
                     <div class="lower-message">
+                      ${ - if message.content.present? }
                       <p class="lower-message__content">
                       ${message.content}
                       </p>
-                      ${message.image.url}
+                      ${ message.image.url}
                     </div>
                   </div> `
     return html;
@@ -37,12 +39,17 @@ $(function(){
     })
     .done(function(data){
       var html = buildHTML(data);
+      $('.content').append(html);
       $('.messages').append(html);
-      $( ".form__message").val('')
+    })
 
-    })
-   .fail(function(){
-      alert('error');
-    })
+     .fail(function(){
+        alert('error');
+      })
   })
-});
+     function scroll(){
+      $('.content').animate({scrollTop: ('.content')[0].scrollHeight},'fast');
+    }
+  })
+
+
