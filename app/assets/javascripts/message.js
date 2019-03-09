@@ -1,5 +1,6 @@
 
-$(function(){
+$(document).on('turbolinks:load', function() {
+
     function buildHTML(message){
     var content = message.content ? message.content : '';
     var image = message.image.url ? `<img src='${message.image.url}'> ` : '';
@@ -44,11 +45,10 @@ $(function(){
       $('.messages').append(html);
       $(".messages").animate({scrollTop:$('.messages')[0].scrollHeight});
       $('.new_message .message').val('');
+      $('input').prop('disabled', false);
     })
     .fail(function(){
       alert('error');
     })
   })
-  })
-
-
+  });
