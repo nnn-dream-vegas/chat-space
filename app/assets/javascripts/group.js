@@ -1,6 +1,6 @@
 $(function(){
-  $('#user_serch_form').on('keyup',function(){
-    var input = $('#user_serch_form').val();
+  $('#user_serch_field').on('keyup',function(){
+    var input = $('#user_serch_field').val();
 
     console.log(input)
   })

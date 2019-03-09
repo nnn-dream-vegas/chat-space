@@ -1,23 +1,25 @@
 
 $(function(){
     function buildHTML(message){
+    var content = message.content ? message.content : '';
+    var image = message.image.url ? `<img src='${message.image.url}'> ` : '';
 
 
-    var html = `<div class=message>
+    var html = `<div class=message {"data-id": "#{message.id}"}>
                     <div class="upper-message">
                       <div class="upper-message__user-name">
                       ${message.user_name}
                       </div>
                       <div class="upper-message__date">
-                      ${message.created_at}("%Y/%m/%d %H:%M")
+                      ${message.created_at}
                       </div>
                     </div>
                     <div class="lower-message">
-                      ${ - if message.content.present? }
                       <p class="lower-message__content">
-                      ${message.content}
+                      ${content}
                       </p>
-                      ${ message.image.url}
+                       ${image}
+
                     </div>
                   </div> `
     return html;
@@ -37,19 +39,16 @@ $(function(){
       processData: false,
       contentType: false
     })
-    .done(function(data){
+     .done(function(data){
       var html = buildHTML(data);
-      $('.content').append(html);
       $('.messages').append(html);
+      $(".messages").animate({scrollTop:$('.messages')[0].scrollHeight});
+      $('.new_message .message').val('');
     })
-
-     .fail(function(){
-        alert('error');
-      })
+    .fail(function(){
+      alert('error');
+    })
   })
-     function scroll(){
-      $('.content').animate({scrollTop: ('.content')[0].scrollHeight},'fast');
-    }
   })
 
 
