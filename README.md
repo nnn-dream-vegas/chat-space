@@ -26,3 +26,21 @@
 - belongs_to :group
 - belongs_to :user
 
+
+
+
+## group_usersテーブル
+
+|Column|Type|Options|
+|------|----|-------|
+|content|string|
+|image|string|
+|group|references|foreign_key: true|
+|user|references|foreign_key: true|
+
+### Association
+
+- belongs_to :group
+- belongs_to :user
+
+
