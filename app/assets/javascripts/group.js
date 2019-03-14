@@ -1,13 +1,16 @@
-$(function(){
+$(document).on('turbolinks:load', function() {
 
 var search_list = $("#user-search-result");
+var member_list = $("#chat-group-users")
 
     function appendUserToSearch(user){
     var html =`<div class="chat-group-user clearfix">
                 <p class="chat-group-user__name">${user.name}</p>
-                <a class= "chat-group-user__btn class chat-group-user__btn--add" data-user-id=${user.id} data-user-name${user.name}>追加</a>
+                <a class= "chat-group-user__btn class chat-group-user__btn--add",id="add_btn" data-user-id=${user.id} data-user-name${user.name}>追加</a>
                </div>`
     search_list.append(html);
+
+
    }
 
 
@@ -20,16 +23,24 @@ var search_list = $("#user-search-result");
       search_list.append(html)
     }
 
-  // var member = $("#chat-group-users")
 
-  //    function appendMaemberHTML(member){
-  //     var html = `<div class='chat-group-user clearfix js-chat-member' id='chat-group-user-8'>
-  //                   <input name='group[user_ids][]' type='hidden' value='ユーザーのid'>
-  //                   <p class='chat-group-user__name'>ユーザー名</p>
-  //                   <a class='user-search-remove chat-group-user__btn chat-group-user__btn--remove js-remove-btn'>削除</a>
-  //                 </div>`
 
-    // }
+
+  function appendMember(id,name) {
+    var html =
+      `<div class="chat-group-user clearfix" id="chat-group-user">
+      <input type="hidden" name="group[user_ids][]" value=${id}>
+      <p class="chat-group-user__name" >${name}
+      </p>
+      <a class="user-search-remove chat-group-user__btn chat-group-user__btn--remove" data-user-id=${id}>削除
+      </a>
+      </div>`
+
+      member_list.append(html);
+
+  }
+
+
 
   $("#user-search-field").on("keyup",function(e){
     e.preventDefault();
@@ -59,19 +70,23 @@ var search_list = $("#user-search-result");
   })
 
 
-  // $(".chat-group-user__btn class chat-group-user__btn--add").on("click",function(e){
-  //   e.preventDefault()
-  //   var userName = $(this).data('user.name')
-  //   console.log(aaa)
+// 追加ボタンの機能
+  $("#user-search-result").on("click",function(){
 
-  //   // var userId   = $(this).data('user.id')
-  //   // appendGroupToMember(useName,userId)
+    var name = $(this).data('user.name')
+    var id   = $(this).data('user.id')
+    var html = appendMember(name,id);
 
-  //   .done(function(member){
-  //     $(',chat-group-user clearfix').remove();
-  //   })
-  // })
+    $('#chat-group-users').append(html);
+    $(this).parent('.chat-group-user').remove();
+  });
 
+// 削除ボタンの機能
 
+  $('#chat-group-users').on('click', '.user-search-remove', function(){
+    $('#chat-group-user').remove();
+  })
 
 });
+
+
