@@ -42,7 +42,6 @@ var member_list = $("#chat-group-users")
 
   var currentId = $('#current').val();
   var user_list = [currentId];
-  console.log(user_list)
 
   $("#user-search-field").on("keyup",function(e){
     e.preventDefault();
@@ -78,7 +77,6 @@ var member_list = $("#chat-group-users")
     var memberId   = $(this).data('user-id')
     var html = appendMember(memberName,memberId);
     user_list.push(memberId);
-    console.log(user_list);
     $('#chat-group-member').remove();
   });
 
