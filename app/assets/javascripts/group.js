@@ -4,9 +4,9 @@ var search_list = $("#user-search-result");
 var member_list = $("#chat-group-users")
 
     function appendUserToSearch(user){
-    var html =`<div class="chat-group-user clearfix">
+    var html =`<div class="chat-group-user clearfix" id="chat-group-member">
                 <p class="chat-group-user__name">${user.name}</p>
-                <a class= "chat-group-user__btn class chat-group-user__btn--add",id="add_btn" data-user-id=${user.id} data-user-name${user.name}>追加</a>
+                <a id="add_btn" class= "chat-group-user__btn class chat-group-user__btn--add" data-user-id=${user.id} data-user-name=${user.name}>追加</a>
                </div>`
     search_list.append(html);
 
@@ -26,13 +26,13 @@ var member_list = $("#chat-group-users")
 
 
 
-  function appendMember(id,name) {
+  function appendMember(memberName,memberId) {
     var html =
       `<div class="chat-group-user clearfix" id="chat-group-user">
-      <input type="hidden" name="group[user_ids][]" value=${id}>
-      <p class="chat-group-user__name" >${name}
+      <input type="hidden" name="group[user_ids][]" value=${memberId}>
+      <p class="chat-group-user__name" >${memberName}
       </p>
-      <a class="user-search-remove chat-group-user__btn chat-group-user__btn--remove" data-user-id=${id}>削除
+      <a id="remove_btn"class="user-search-remove chat-group-user__btn chat-group-user__btn--remove">削除
       </a>
       </div>`
 
@@ -71,22 +71,19 @@ var member_list = $("#chat-group-users")
 
 
 // 追加ボタンの機能
-  $("#user-search-result").on("click",function(){
-
-    var name = $(this).data('user.name')
-    var id   = $(this).data('user.id')
-    var html = appendMember(name,id);
-
-    $('#chat-group-users').append(html);
-    $(this).parent('.chat-group-user').remove();
+  $("#user-search-result").on("click",'#add_btn',function(e){
+    var memberName = $(this).data('user-name')
+    var memberId   = $(this).data('user-id')
+    var html = appendMember(memberName,memberId);
+    $('#chat-group-member').remove();
   });
 
 // 削除ボタンの機能
 
-  $('#chat-group-users').on('click', '.user-search-remove', function(){
+  $('#chat-group-users').on('click','#remove_btn',function(e){
     $('#chat-group-user').remove();
-  })
 
+  })
 });
 
 
