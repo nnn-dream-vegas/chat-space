@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.where('name LIKE(?)' ,"%#{params[:keyword]}%")
+    @users = User.where('name LIKE(?)' ,"%#{params[:keyword]}%").where.not(id: params[:id])
     respond_to do |format|
     format.json
     end

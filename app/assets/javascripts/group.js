@@ -40,7 +40,9 @@ var member_list = $("#chat-group-users")
 
   }
 
-
+  var currentId = $('#current').val();
+  var user_list = [currentId];
+  console.log(user_list)
 
   $("#user-search-field").on("keyup",function(e){
     e.preventDefault();
@@ -49,7 +51,7 @@ var member_list = $("#chat-group-users")
     $.ajax({
       type: 'GET',
       url: '/users',
-      data: { keyword: input},
+      data: { keyword: input, id: user_list},
       dataType: 'json'
     })
 
@@ -75,13 +77,17 @@ var member_list = $("#chat-group-users")
     var memberName = $(this).data('user-name')
     var memberId   = $(this).data('user-id')
     var html = appendMember(memberName,memberId);
+    user_list.push(memberId);
+    console.log(user_list);
     $('#chat-group-member').remove();
   });
 
 // 削除ボタンの機能
 
   $('#chat-group-users').on('click','#remove_btn',function(e){
+    var memberId   = $(this).data('user-id')
     $('#chat-group-user').remove();
+    user_list.shift(memberId);
 
   })
 });
