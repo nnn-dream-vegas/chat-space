@@ -54,20 +54,20 @@ var member_list = $("#chat-group-users")
       dataType: 'json'
     })
 
-   .done(function(user){
-     $("#user-search-result").empty();
-   if (user.length !== 0) {
+  .done(function(user){
+    $("#user-search-result").empty();
+      if (user.length !== 0) {
       user.forEach(function(user){
       appendUserToSearch(user);
       });
     }
-     else {
+      else {
        appendErrMsgToHTML("一致するユーザがいません");
      }
-    })
-    .fail(function(){
-      alert('ユーザー検索に失敗しました');
-    })
+  })
+  .fail(function(){
+    alert('ユーザー検索に失敗しました');
+  })
   })
 
 
