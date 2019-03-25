@@ -1,5 +1,5 @@
-
 $(document).on('turbolinks:load', function() {
+
 
     function buildHTML(message){
     var content = message.content ? message.content : '';
@@ -26,7 +26,9 @@ $(document).on('turbolinks:load', function() {
     return html;
   }
 
-
+function ScrollTopNew(){
+  $(".messages").animate({scrollTop:$('.messages')[0].scrollHeight});
+}
 
   $('#new_message').on('submit', function(e){
     e.preventDefault();
@@ -43,7 +45,7 @@ $(document).on('turbolinks:load', function() {
      .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
-      $(".messages").animate({scrollTop:$('.messages')[0].scrollHeight});
+      ScrollTopNew();
       $('#new_message')[0].reset();
     })
     .fail(function(){
@@ -53,4 +55,32 @@ $(document).on('turbolinks:load', function() {
       $('.form__submit').prop('disabled', false);
     })
   })
-  });
+
+ // 非同期通信
+  var interval = setInterval(function(){
+    if (window.location.href.match(/\/groups\/\d+\/messages/)) {
+      var id = $('.message:last-child').data('id');
+      $.ajax({
+        url: location.href,
+        data: { id: id },
+        type: "GET",
+        dataType: 'json',
+      })
+
+      .done(function(data){
+        var insertHTML = '';
+        data.forEach(function(message){
+        insertHTML += buildHTML(message);
+        });
+        $(".messages").append(insertHTML);
+        ScrollTopNew();
+      })
+      .fail(function(){
+        alert('自動更新に失敗');
+      });
+    } else {
+      clearInterval(interval);
+    }
+  }, 5000);
+
+});
