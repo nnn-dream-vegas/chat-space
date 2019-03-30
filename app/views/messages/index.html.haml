@@ -4,6 +4,12 @@
 
   .chat
     .header
+      .group_name
+        = @group.name
+      .group_member
+        Member
+        - @members.each do |member|
+          = member.name
       .right-header
         .right-header__button
           = link_to "Edit", edit_group_path(current_user)
