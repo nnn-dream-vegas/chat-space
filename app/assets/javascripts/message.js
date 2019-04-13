@@ -59,10 +59,10 @@ function ScrollTopNew(){
  // 非同期通信
   var interval = setInterval(function(){
     if (window.location.href.match(/\/groups\/\d+\/messages/)) {
-      var id = $('.message:last-child').data('id');
+      var last_id = $('.message:last-child').data('id');
       $.ajax({
         url: location.href,
-        data: { id: id },
+        data: { id: last_id },
         type: "GET",
         dataType: 'json',
       })
