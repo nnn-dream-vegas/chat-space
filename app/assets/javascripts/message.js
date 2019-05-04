@@ -30,10 +30,20 @@ function ScrollTopNew(){
   $(".messages").animate({scrollTop:$('.messages')[0].scrollHeight});
 }
 
+
+// 非同期通信
   $('#new_message').on('submit', function(e){
     e.preventDefault();
     var formData = new FormData(this);
     var url = $(this).attr('action')
+    $('.form__submit').removeAttr('data-disable-with');
+
+    // 空文字で送信ボタンを押した時にアラート
+    if ($('#message_content').val() == "" && $('#message_image').val() == ""){
+      alert('メッセージ入力してください')
+      return
+    }
+
     $.ajax({
       url: url,
       type: "POST",
@@ -42,24 +52,27 @@ function ScrollTopNew(){
       processData: false,
       contentType: false
     })
+
+
      .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
       ScrollTopNew();
       $('#new_message')[0].reset();
     })
+
     .fail(function(){
-      alert('error');
+      alert('メッセージの送信失敗');
     })
-    .always(function(){
-      $('.form__submit').prop('disabled', false);
-    })
+
   })
 
- // 非同期通信
+ // 自動更新
+
   var interval = setInterval(function(){
     if (window.location.href.match(/\/groups\/\d+\/messages/)) {
       var last_id = $('.message:last-child').data('id');
+
       $.ajax({
         url: location.href,
         data: { id: last_id },
@@ -68,12 +81,14 @@ function ScrollTopNew(){
       })
 
       .done(function(data){
-        var insertHTML = '';
-        data.forEach(function(message){
-        insertHTML += buildHTML(message);
-        });
-        $(".messages").append(insertHTML);
-        ScrollTopNew();
+        if (data.length > 0) {
+          var insertHTML = '';
+          data.forEach(function(message){
+          insertHTML += buildHTML(message);
+          });
+          $(".messages").append(insertHTML);
+          ScrollTopNew()
+        }
       })
       .fail(function(){
         alert('自動更新に失敗');

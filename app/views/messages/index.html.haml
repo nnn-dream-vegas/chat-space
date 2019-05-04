@@ -17,7 +17,7 @@
       = render partial: 'message', collection: @messages
     .form
       = form_for [@group, @message], id: 'new_message' do |f|
-        = f.text_field :content, class: 'message', placeholder: 'type a message'
+        = f.text_field :content, class: 'message', placeholder: 'メッセージを入力してください'
         .form__mask
           = f.label :image, class: 'message_image' do
             = fa_icon 'picture-o', class: 'icon'
